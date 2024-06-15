@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import userRoutes from "./routes/users";
+import authRoutes from "./routes/auth"
 
 // Load environment variables from .env file
 dotenv.config();
@@ -23,5 +24,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
 app.listen(3000, () => console.log('Server is running on port 3000'));
