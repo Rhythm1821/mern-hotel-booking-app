@@ -3,12 +3,16 @@ import {check, validationResult} from "express-validator"
 import {User} from '../models/user'
 import bcryt from 'bcryptjs'
 import jwt from "jsonwebtoken"
+import verifyToken from "../middlewares/auth"
 
 const router = express.Router()
 
-router.post('/login', [check("email","Email is required").isEmail(),
-    check('password', 'Password with 6 or more characters required').isLength({min: 6})
-],async (req:Request,res:Response) => {
+router.post('/login', 
+    [
+        check("email","Email is required").isEmail(),
+        check('password', 'Password with 6 or more characters required').isLength({min: 6})
+    ],
+    async (req:Request,res:Response) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() })
@@ -39,6 +43,10 @@ router.post('/login', [check("email","Email is required").isEmail(),
         console.log('Error: ', error);
         res.status(500).json({message: 'Server error'})
     }
+})
+
+router.get('/validate-token', verifyToken, (req:Request, res:Response)=>{
+    res.status(200).send({userId: req.userId})
 })
 
 export default router
