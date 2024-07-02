@@ -10,9 +10,9 @@ declare global {
 }
 
 const verifyToken = (req:Request, res:Response, next:NextFunction) => {
-    const token = req.cookies["authToken"]
+    const token = req.cookies["auth_token"]
     if (!token) {
-        return res.status(401).json({message: "Unauthorized"})
+        return res.status(401).json({message: "Token not present"})
     }
 
     try {

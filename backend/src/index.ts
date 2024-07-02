@@ -5,19 +5,23 @@ import mongoose from "mongoose";
 import userRoutes from "./routes/users";
 import authRoutes from "./routes/auth"
 import cookieParser from "cookie-parser";
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 // Load environment variables from .env file
-dotenv.config();
+const envFile = process.env.NODE_ENV === 'e2e' ? '.env.e2e' : '.env';
+dotenv.config({ path: envFile });
 
 const connectionString = process.env.MONGODB_CONNECTION_STRING;
 
-// Check if connection string is loaded
-if (!connectionString) {
-  throw new Error('MONGODB_CONNECTION_STRING is not defined in the environment variables.');
-}
 
 mongoose.connect(connectionString as string)
-  .then(() => console.log('Database connected!'))
+  .then(() => console.log('Database connected!', connectionString))
   .catch((err) => console.log('Database connection error:', err));
 
 const app = express();
