@@ -4,6 +4,9 @@ import cloudinary from "cloudinary"
 import { Hotel, HotelType } from "../models/hotel"
 import verifyToken from "../middlewares/auth"
 import { body } from "express-validator"
+import dotenv from "dotenv"
+
+dotenv.config()
 
 const router=express.Router()
 
@@ -13,6 +16,12 @@ const upload = multer({
     limits: {
         fileSize: 5 * 1024 * 1024 // 5MB
     }
+})
+
+cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
 // api/my-hotels
