@@ -4,6 +4,8 @@ import TypeSection from "./TypeSection"
 import FacilitiesSection from "./FacilitiesSection"
 import GuestsSection from "./GuestsSection"
 import ImageSection from "./ImageSection"
+import { HotelType } from "../../../../backend/src/models/hotel"
+import { useEffect } from "react"
 
 export type HotelFormData = {
     name: string,
@@ -20,13 +22,18 @@ export type HotelFormData = {
 }
 
 type Props = {
+    hotel: HotelType,
     onSave: (hotelFormData: FormData) => void,
     isLoading: boolean
 }
 
-export default function ManageHoteForm({onSave, isLoading}: Props) {
+export default function ManageHoteForm({hotel, onSave, isLoading}: Props) {
     const formMethods = useForm<HotelFormData>()
-    const { handleSubmit } = formMethods
+    const { handleSubmit, reset } = formMethods
+
+    useEffect(()=>{
+        reset(hotel)
+    },[hotel,reset])
 
     const onSubmit = handleSubmit((formDataJson: HotelFormData) => {
         // create new FormData object & call our API

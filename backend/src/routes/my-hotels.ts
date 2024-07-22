@@ -80,5 +80,15 @@ router.get('/', verifyToken, async (req:Request, res:Response) => {
     }
 })
 
+// api/my-hotels/:id
+router.get("/:id", verifyToken, async (req: Request, res: Response) => {
+    try {
+        const hotel = await Hotel.findById(req.params.id.toString())
+        return res.status(200).json(hotel)
+        
+    } catch (error) {
+        res.status(500).json({message: "Error fetching hotel"})
+    }
+})
 
 export default router
