@@ -1,1 +1,0 @@
-# mern-hotel-booking-app
