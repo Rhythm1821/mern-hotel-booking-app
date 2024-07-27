@@ -1,6 +1,5 @@
 import React from "react"
 
-// 9:24:00
 type SearchContext = {
     destination: string
     checkIn: Date
