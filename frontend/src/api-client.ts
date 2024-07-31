@@ -1,6 +1,7 @@
                                                                                                                           import { RegisterFormData } from "./pages/Register";
 import { SignInFormData } from "./pages/SignIn";
 import { HotelType } from "../../backend/src/models/hotel";
+import { HotelSearchRespone } from "../../backend/src/shared/types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -110,6 +111,36 @@ export const updateMyHotelById =async (hotelFormData: FormData) => {
 
     if (!res.ok) {
         throw new Error('Failed to update hotel')
+    }
+
+    return res.json()
+}
+
+export type SearchParams = {
+    destination?: string,
+    checkInDate?: string,
+    checkOutDate?: string,
+    adultCount?: string,
+    childCount?: string,
+    page?: string
+}
+
+export const searchHotels =async (
+    searchParams: SearchParams
+    ): Promise<HotelSearchRespone> => {
+
+    const queryParams = new URLSearchParams(searchParams)
+    queryParams.append('destination',searchParams.destination || "")
+    queryParams.append('checkIn',searchParams.checkInDate || "")
+    queryParams.append('checkOut',searchParams.checkOutDate || "")
+    queryParams.append('adultCount',searchParams.adultCount || "")
+    queryParams.append('childCount',searchParams.childCount || "")
+    queryParams.append('page',searchParams.page || "")
+
+    const res = await fetch(`${API_BASE_URL}/api/hotels?${queryParams}`)
+
+    if (!res.ok) {
+        throw new Error('Failed to fetch hotels')
     }
 
     return res.json()
